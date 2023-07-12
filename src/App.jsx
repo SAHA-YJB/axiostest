@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
+import api from "./axios/api";
 
 function App() {
   const [todos, setTodos] = useState(null);
@@ -11,7 +11,9 @@ function App() {
 
   //get
   const fetchTodos = async () => {
-    const { data } = await axios.get("http://localhost:4001/todos");
+    // const { data } = await axios.get("http://localhost:4001/todos");
+    //환경변수로 바꾸기
+    const { data } = await api.get("/todos");
     console.log(data);
     setTodos(data);
   };
@@ -22,19 +24,19 @@ function App() {
 
   //post
   const onSubmitHandler = async () => {
-    axios.post("http://localhost:4001/todos", inputValue);
+    api.post("/todos", inputValue);
     // setTodos([...todos, inputValue]);
     fetchTodos();
   };
 
   //delete
   const onDeleteBtnHandler = async (id) => {
-    axios.delete(`http://localhost:4001/todos/${id}`);
+    api.delete(`/todos/${id}`);
     setTodos(todos.filter((item) => item.id !== id));
   };
   //patch
   const onUpdateBtnHandler = async () => {
-    axios.patch(`http://localhost:4001/todos/${targetId}`, {
+    api.patch(`/todos/${targetId}`, {
       title: edit,
     });
     setTodos(
